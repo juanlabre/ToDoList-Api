@@ -92,17 +92,16 @@ public class ToDoListService {
     }
 
     @PUT
-    @Path("/update-state/{title}")
-    public Set<ToDoList> updateState(@PathParam("title") String title, String state) {
+    @Path("/manage-state/{title}")
+    public Set<ToDoList> manageState(@PathParam("title") String title) {
         toDoLists.forEach(value -> {
             if (value.getTitle().equals(title)) {
-                value.setState(state);
+                value.setState(value.getState().equals("COMPLETE")?"INCOMPLETE":"COMPLETE");
             }
         });
 
         logger.info(
                 "PUT /to-do-list/update-state/"+title+"\n"+
-                "\tRequest: "+state+"\n"+
                 "\tResponse: "+toDoLists
         );
 
@@ -112,15 +111,18 @@ public class ToDoListService {
     @GET
     @Path("/search/{title}")
     public ToDoList searchByTitle(@PathParam("title") String title) {
-        ToDoList toDoListReturn = toDoLists.stream()
-                .filter(toDoList -> toDoList.getTitle().equals(title))
-                .findAny()
-                .orElse(null);
+        ToDoList toDoListSearched = null;
+        for (ToDoList toDoList : toDoLists) {
+            if(toDoList.getTitle().equals(title)) {
+                toDoListSearched = toDoList;
+                break;
+            }
+        }
 
         logger.info("GET /to-do-list/search/"+title+"\n"+
-                "\tResponse: "+toDoListReturn
+                "\tResponse: "+toDoListSearched
         );
 
-        return toDoListReturn;
+        return toDoListSearched;
     }
 }
