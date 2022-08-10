@@ -21,9 +21,9 @@ public class ToDoListService {
     private Set<ToDoList> toDoLists = new HashSet<>();
 
     public ToDoListService() {
-        toDoLists.add(new ToDoList("Test1", "desc test1"));
-        toDoLists.add(new ToDoList("Test2", "desc test2"));
-        toDoLists.add(new ToDoList("Test3", "desc test3"));
+        toDoLists.add(new ToDoList("Test1", "desc test1", "COMPLETE"));
+        toDoLists.add(new ToDoList("Test2", "desc test2", "INCOMPLETE"));
+        toDoLists.add(new ToDoList("Test3", "desc test3", "COMPLETE"));
     }
 
     @GET
@@ -48,6 +48,7 @@ public class ToDoListService {
         toDoLists.forEach(value -> {
             if (value.getTitle().equals(element.getTitle())) {
                 value.setDescription(element.getDescription());
+                value.setState(element.getState());
             }
         });
         return toDoLists;
