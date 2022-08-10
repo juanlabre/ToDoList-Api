@@ -58,4 +58,13 @@ public class ToDoListService {
         });
         return toDoLists;
     }
+
+    @GET
+    @Path("/search/{title}")
+    public ToDoList searchByTitle(@PathParam("title") String title) {
+        return toDoLists.stream()
+                .filter(toDoList -> toDoList.getTitle().equals(title))
+                .findAny()
+                .orElse(null);
+    }
 }
